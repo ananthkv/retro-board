@@ -9,6 +9,7 @@
   "dependencies": {
     "@types/express": "^4.16.0",
     "@types/lodash": "^4.14.118",
+    "@types/mongoose": "^5.3.1",
     "@types/nedb": "^1.8.6",
     "@types/node-emoji": "^1.8.0",
     "@types/socket.io": "^2.1.0",
@@ -17,6 +18,7 @@
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
+    "mongoose": "^5.3.10",
     "nedb": "^1.8.0",
     "node-emoji": "^1.8.1",
     "socket.io": "^2.1.1"

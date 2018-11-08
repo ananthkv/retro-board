@@ -44,3 +44,4 @@ stats
 package-lock.json
 yarn.lock
 dist/
+configuration.json

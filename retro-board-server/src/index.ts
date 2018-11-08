@@ -52,7 +52,7 @@ interface Users {
   [socketId: string]: string | null;
 }
 
-db().then((store: Store) => {
+db().then(store => {
   const users: Users = {};
   const d = () => y(`[${moment().format("HH:mm:ss")}]`);
 
