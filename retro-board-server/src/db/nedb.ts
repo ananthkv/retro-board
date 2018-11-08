@@ -1,8 +1,8 @@
-import Datastore from "nedb";
-import path from "path";
-import { Session } from "retro-board-common";
+import Datastore from 'nedb';
+import path from 'path';
+import { Session } from 'retro-board-common';
 
-const dbFile = path.resolve(__dirname, "..", "persist", "db");
+const dbFile = path.resolve(__dirname, '..', 'persist', 'db');
 
 const get = (store: Datastore) => (sessionId: string) =>
   new Promise((resolve, reject) => {
@@ -15,7 +15,7 @@ const get = (store: Datastore) => (sessionId: string) =>
         resolve({
           id: sessionId,
           name: null,
-          posts: []
+          posts: [],
         });
       }
     });
@@ -36,6 +36,6 @@ export default function db() {
   const store = new Datastore({ filename: dbFile, autoload: true });
   return Promise.resolve({
     get: get(store),
-    set: set(store)
+    set: set(store),
   });
 }

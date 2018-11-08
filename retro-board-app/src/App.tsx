@@ -1,9 +1,9 @@
-import React, { Component, useState } from "react";
-import { getUniverse } from "retro-board-common";
-import { Input } from "@material-ui/core";
+import React, { useState } from 'react';
+import { getUniverse } from 'retro-board-common';
+import { Input } from '@material-ui/core';
 
 function App() {
-  const [title, setTitle] = useState("hello");
+  const [title, setTitle] = useState('hello');
   return (
     <div>
       <h1>

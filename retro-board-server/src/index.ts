@@ -1,12 +1,12 @@
-import express from "express";
-import path from "path";
-import socketIo from "socket.io";
-import http from "http";
-import { find } from "lodash";
-import chalk from "chalk";
-import moment from "moment";
-import db from "./db";
-import { Actions, Session } from "retro-board-common";
+import express from 'express';
+import path from 'path';
+import socketIo from 'socket.io';
+import http from 'http';
+import { find } from 'lodash';
+import chalk from 'chalk';
+import moment from 'moment';
+import db from './db';
+import { Actions, Session } from 'retro-board-common';
 
 const {
   RECEIVE_POST,
@@ -23,7 +23,7 @@ const {
   JOIN_SESSION,
   RENAME_SESSION,
   LEAVE_SESSION,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
 } = Actions;
 
 const app = express();
@@ -31,18 +31,18 @@ const httpServer = new http.Server(app);
 const io = socketIo(httpServer);
 const port = process.env.PORT || 8081;
 const htmlFile =
-  process.env.NODE_ENV === "production"
-    ? path.resolve(__dirname, "..", "assets", "index.html")
-    : path.resolve(__dirname, "..", "content", "index.html");
-const assetsFolder = path.resolve(__dirname, "..", "assets");
-const staticFolder = path.resolve(__dirname, "..", "static");
+  process.env.NODE_ENV === 'production'
+    ? path.resolve(__dirname, '..', 'assets', 'index.html')
+    : path.resolve(__dirname, '..', 'content', 'index.html');
+const assetsFolder = path.resolve(__dirname, '..', 'assets');
+const staticFolder = path.resolve(__dirname, '..', 'static');
 
 const g = chalk.green.bind(chalk);
 const b = chalk.blue.bind(chalk);
 const gr = chalk.grey.bind(chalk);
 const r = chalk.red.bind(chalk);
 const y = chalk.yellow.bind(chalk);
-const s = (str: string) => b(str.replace("retrospected/", ""));
+const s = (str: string) => b(str.replace('retrospected/', ''));
 
 interface ExtendedSocket extends socketIo.Socket {
   sessionId: string;
@@ -54,7 +54,7 @@ interface Users {
 
 db().then(store => {
   const users: Users = {};
-  const d = () => y(`[${moment().format("HH:mm:ss")}]`);
+  const d = () => y(`[${moment().format('HH:mm:ss')}]`);
 
   const getRoom = (sessionId: string) => `board-${sessionId}`;
 
@@ -64,12 +64,12 @@ db().then(store => {
     action: string,
     data: any
   ) => {
-    console.log(`${d()}${g(" ==> ")} ${s(action)} ${gr(JSON.stringify(data))}`);
+    console.log(`${d()}${g(' ==> ')} ${s(action)} ${gr(JSON.stringify(data))}`);
     socket.broadcast.to(getRoom(sessionId)).emit(action, data);
   };
 
   const sendToSelf = (socket: ExtendedSocket, action: string, data: any) => {
-    console.log(`${d()}${g(" --> ")} ${s(action)} ${gr(JSON.stringify(data))}`);
+    console.log(`${d()}${g(' --> ')} ${s(action)} ${gr(JSON.stringify(data))}`);
     socket.emit(action, data);
   };
 
@@ -77,7 +77,7 @@ db().then(store => {
     store.set(session).catch((err: string) => console.error(err));
 
   const sendClientList = (sessionId: string, socket: ExtendedSocket) => {
-    const room = io.nsps["/"].adapter.rooms[getRoom(sessionId)];
+    const room = io.nsps['/'].adapter.rooms[getRoom(sessionId)];
     if (room) {
       const clients = Object.keys(room.sockets);
       const names = clients.map((id, i) => users[id] || `(Anonymous #${i})`);
@@ -168,19 +168,19 @@ db().then(store => {
     }
   };
 
-  app.use("/assets", express.static(assetsFolder));
-  app.use("/static", express.static(staticFolder));
+  app.use('/assets', express.static(assetsFolder));
+  app.use('/static', express.static(staticFolder));
   app.use(
-    "/favicon.ico",
-    express.static(path.resolve(staticFolder, "favicon.ico"))
+    '/favicon.ico',
+    express.static(path.resolve(staticFolder, 'favicon.ico'))
   );
-  app.get("/*", (req, res) => res.sendFile(htmlFile));
+  app.get('/*', (req, res) => res.sendFile(htmlFile));
 
-  io.on("connection", (socket: ExtendedSocket) => {
+  io.on('connection', (socket: ExtendedSocket) => {
     const ip =
-      socket.handshake.headers["x-forwarded-for"] || socket.handshake.address;
+      socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
     console.log(
-      d() + b(" Connection: ") + r("New user connected"),
+      d() + b(' Connection: ') + r('New user connected'),
       gr(socket.id),
       gr(ip)
     );
@@ -193,13 +193,13 @@ db().then(store => {
       { type: LIKE_SUCCESS, handler: like },
       { type: EDIT_POST, handler: edit },
       { type: LOGIN_SUCCESS, handler: login },
-      { type: LEAVE_SESSION, handler: leave }
+      { type: LEAVE_SESSION, handler: leave },
     ];
 
     actions.forEach(action => {
       socket.on(action.type, data => {
         console.log(
-          d() + r(" <--  ") + s(action.type),
+          d() + r(' <--  ') + s(action.type),
           gr(JSON.stringify(data))
         );
         const sid =
@@ -212,7 +212,7 @@ db().then(store => {
       });
     });
 
-    socket.on("disconnect", () => {
+    socket.on('disconnect', () => {
       if (socket.sessionId) {
         sendClientList(socket.sessionId, socket);
       }
@@ -220,6 +220,6 @@ db().then(store => {
   });
 
   httpServer.listen(port);
-  const env = process.env.NODE_ENV || "dev";
+  const env = process.env.NODE_ENV || 'dev';
   console.log(`Server started on port ${r(port)}, environement: ${b(env)}`);
 });
