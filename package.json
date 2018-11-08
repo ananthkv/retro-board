@@ -8,7 +8,8 @@
     "retro-board-*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "del ./retro-board-*/*/yarn.lock && del ./yarn.lock && del ./retro-board-*/*/node_modules && del ./node_modules"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   "homepage": "https://github.com/antoinejaussoin/retro-board#readme",
   "dependencies": {
     "@types/node": "^10.12.3",
+    "del-cli": "^1.1.0",
     "typescript": "^3.1.6"
   }
 }
