@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { getUniverse } from "retro-board-common";
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -11,6 +12,7 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
+          <p>The response to the universe is {getUniverse()}</p>
           <a
             className="App-link"
             href="https://reactjs.org"
