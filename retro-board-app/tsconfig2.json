@@ -1,5 +1,4 @@
 {
-  "extends": "./tsconfig2.json",
   "compilerOptions": {
     "target": "es5",
     "allowJs": true,
@@ -13,9 +12,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "retro-board-*": ["../retro-board-*/src"]
+    }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
