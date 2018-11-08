@@ -35,7 +35,7 @@ const languages: Translations = {
 
 function useTranslation() {
   const language = useContext(LanguageContext);
-  return languages[language];
+  return languages[language.language];
 }
 
 export default useTranslation;
