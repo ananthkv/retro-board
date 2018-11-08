@@ -1,6 +1,6 @@
 {
   "name": "retro-board-common",
-  "version": "1.0.0",
+  "version": "2.0.0-alpha",
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && ../node_modules/typescript/bin/tsc",
