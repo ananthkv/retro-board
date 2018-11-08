@@ -1,0 +1,26 @@
+{
+  "name": "retro-board",
+  "version": "2.0.0",
+  "description": "A retro board (TODO)",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "retro-board-*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antoinejaussoin/retro-board.git"
+  },
+  "keywords": [
+    "TODO"
+  ],
+  "author": "Antoine Jaussoin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antoinejaussoin/retro-board/issues"
+  },
+  "homepage": "https://github.com/antoinejaussoin/retro-board#readme"
+}
