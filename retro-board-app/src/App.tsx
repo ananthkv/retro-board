@@ -1,30 +1,17 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { getUniverse } from "retro-board-common";
-import logo from "./logo.svg";
-import "./App.css";
+import { Input } from "@material-ui/core";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <p>The response to the universe is {getUniverse()}</p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+function App() {
+  const [title, setTitle] = useState("hello");
+  return (
+    <div>
+      <h1>Empty {getUniverse()}</h1>
+      <p>
+        <Input value={title} onChange={v => setTitle(v.target.value)} />
+      </p>
+    </div>
+  );
 }
 
 export default App;
