@@ -29,9 +29,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "react-app-rewire-yarn-workspaces": "^1.0.3",
-    "react-app-rewired": "^1.6.2"
-  }
+  ]
 }
