@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import config from "./config";
-import { Session, Store } from "../types";
+import { Store } from "../types";
+import { Session } from "retro-board-common";
 
 const sessionShema = new mongoose.Schema({
   name: String,

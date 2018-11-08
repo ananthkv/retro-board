@@ -1,6 +1,6 @@
 import Datastore from "nedb";
 import path from "path";
-import { Session } from "../types";
+import { Session } from "retro-board-common";
 
 const dbFile = path.resolve(__dirname, "..", "persist", "db");
 

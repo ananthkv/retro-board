@@ -6,7 +6,9 @@ function App() {
   const [title, setTitle] = useState("hello");
   return (
     <div>
-      <h1>Empty {getUniverse()}</h1>
+      <h1>
+        Empty {getUniverse()} {title}
+      </h1>
       <p>
         <Input value={title} onChange={v => setTitle(v.target.value)} />
       </p>

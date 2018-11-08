@@ -6,9 +6,9 @@ import { find } from "lodash";
 import chalk from "chalk";
 import moment from "moment";
 import db from "./db";
-import { Session, Store } from "./types";
+import { Actions, Session } from "retro-board-common";
 
-import {
+const {
   RECEIVE_POST,
   RECEIVE_BOARD,
   RECEIVE_DELETE_POST,
@@ -24,7 +24,7 @@ import {
   RENAME_SESSION,
   LEAVE_SESSION,
   LOGIN_SUCCESS
-} from "./actions";
+} = Actions;
 
 const app = express();
 const httpServer = new http.Server(app);
