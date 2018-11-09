@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import {
   Button,
@@ -12,6 +12,7 @@ import { Route } from 'react-router-dom';
 import Home from './views/Home';
 import Game from './views/Game';
 import Panel from './views/Panel';
+import Login from './views/Login';
 import useGlobalState from './state';
 
 const Title = styled(Typography)`
@@ -37,6 +38,7 @@ function App() {
       <Route path="/" exact component={Home} />
       <Route path="/game/" component={Game} />
       <Panel />
+      {!state.username && <Login />}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useContext, useReducer, createContext, SFC } from 'react';
 import { State, Action } from './types';
 import reducer from './reducer';
-import { togglePanel } from './actions';
+import { togglePanel, login, logout } from './actions';
 
 const initialState: State = {
   panelOpen: false,
@@ -24,5 +24,7 @@ export function useGlobalState() {
   return {
     state,
     togglePanel: togglePanel(dispatch),
+    login: login(dispatch),
+    logout: logout(dispatch),
   };
 }
