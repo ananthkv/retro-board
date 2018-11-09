@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import GlobalStyles from './GlobalStyles';
-import LanguageContext from './translations/Context';
+import { LanguageContext } from './translations';
 import { Provider as StateContext } from './state';
 import Layout from './Layout';
 

@@ -2,6 +2,7 @@ import React, { useContext, useReducer, createContext, SFC } from 'react';
 
 const initialState: State = {
   panelOpen: false,
+  username: null,
 };
 
 interface Action {
@@ -11,6 +12,7 @@ interface Action {
 
 interface State {
   panelOpen: boolean;
+  username: string | null;
 }
 
 const reducer = (state: State, action: Action) => {
