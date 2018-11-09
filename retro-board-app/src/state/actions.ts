@@ -1,4 +1,3 @@
-import { useGlobalState } from './context';
 import { Dispatch } from './types';
 
 export const TOGGLE_PANEL = 'retrospected/panel/toggle';
