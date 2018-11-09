@@ -14,13 +14,15 @@ import Game from './views/Game';
 import Panel from './views/Panel';
 import Login from './views/Login';
 import useGlobalState from './state';
+import useLoginFromLocalStorage from './effects/useLoginFromLocalStorage';
 
 const Title = styled(Typography)`
   flex-grow: 1;
 `;
 
 function App() {
-  const { state, togglePanel } = useGlobalState();
+  useLoginFromLocalStorage();
+  const { state, togglePanel, logout } = useGlobalState();
   return (
     <div>
       <AppBar position="static">
@@ -31,7 +33,9 @@ function App() {
           <Title variant="title" color="inherit">
             Retrospected
           </Title>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={logout}>
+            {state.username}
+          </Button>
         </Toolbar>
       </AppBar>
 

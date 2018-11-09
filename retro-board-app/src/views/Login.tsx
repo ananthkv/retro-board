@@ -15,7 +15,10 @@ const Login: SFC = ({}) => {
   const translations = useTranslations();
   const { login } = useGlobalState();
   const [username, setUsername] = useState('');
-  const loginHandler = useCallback(() => login(username));
+  const loginHandler = useCallback(() => {
+    login(username);
+    localStorage.setItem('username', username);
+  });
   const handleUsernameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)
   );
