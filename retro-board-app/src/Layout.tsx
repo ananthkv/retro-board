@@ -19,13 +19,12 @@ const Title = styled(Typography)`
 `;
 
 function App() {
-  const { state, dispatch } = useGlobalState();
-  const onTogglePanel = useCallback(() => dispatch({ type: 'toggle-panel' }));
+  const { state, togglePanel } = useGlobalState();
   return (
     <div>
       <AppBar position="static">
         <Toolbar>
-          <IconButton color="inherit" aria-label="Menu" onClick={onTogglePanel}>
+          <IconButton color="inherit" aria-label="Menu" onClick={togglePanel}>
             <MenuIcon />
           </IconButton>
           <Title variant="title" color="inherit">
