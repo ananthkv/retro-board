@@ -40,7 +40,7 @@ function App() {
       </AppBar>
 
       <Route path="/" exact component={Home} />
-      <Route path="/game/" component={Game} />
+      <Route path="/game/:gameId" component={Game} />
       <Panel />
       {!state.username && <Login />}
     </div>

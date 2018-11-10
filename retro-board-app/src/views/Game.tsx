@@ -1,21 +1,41 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import io from 'socket.io-client';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import useTranslations, { LanguageContext } from '../translations';
-import LanguagePicker from '../components/LanguagePicker';
 
-function Game() {
+interface Route {
+  gameId: string;
+}
+interface GameProps extends RouteComponentProps<Route> {}
+
+function Game({
+  match: {
+    params: { gameId },
+  },
+}: GameProps) {
   const translations = useTranslations();
   const languageContext = useContext(LanguageContext);
+  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
+
+  useEffect(
+    () => {
+      console.log('On mount');
+      const socket = io();
+      setSocket(socket);
+
+      socket.on('disconnect', () => {
+        console.warn('Server disconnected');
+        //store.dispatch({ type: LEAVE_SESSION });
+      });
+    },
+    [gameId]
+  );
   return (
     <div>
-      <div>Game {translations.Clients.header}</div>
-      <div>
-        <LanguagePicker
-          value={languageContext.language}
-          onChange={languageContext.setLanguage}
-        />
-      </div>
+      <div>Game {gameId}</div>
+      <div />
     </div>
   );
 }
 
-export default Game;
+export default withRouter(Game);
