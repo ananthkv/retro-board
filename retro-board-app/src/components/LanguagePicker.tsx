@@ -18,7 +18,7 @@ const LanguagePicker: SFC<LanguagePickerProps> = ({ value, onChange }) => {
   return (
     <StyledSelect value={value} onChange={handleSelect}>
       {languages.map(language => (
-        <MenuItem value={language.value}>
+        <MenuItem value={language.value} key={language.value}>
           <LanguageItem>
             <Flag className={`flag-icon flag-icon-${language.iso}`} />
             <Names>

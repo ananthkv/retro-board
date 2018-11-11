@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Button,
@@ -18,11 +19,15 @@ import useLoginFromLocalStorage from './effects/useLoginFromLocalStorage';
 
 const Title = styled(Typography)`
   flex-grow: 1;
+  color: white;
 `;
 
-function App() {
+interface AppProps extends RouteComponentProps {}
+
+function App({ history }: AppProps) {
   useLoginFromLocalStorage();
   const { state, togglePanel, logout } = useGlobalState();
+  const goToHome = useCallback(() => history.push('/'));
   return (
     <div>
       <AppBar position="static">
@@ -30,7 +35,7 @@ function App() {
           <IconButton color="inherit" aria-label="Menu" onClick={togglePanel}>
             <MenuIcon />
           </IconButton>
-          <Title variant="title" color="inherit">
+          <Title variant="title" onClick={goToHome}>
             Retrospected
           </Title>
           <Button color="inherit" onClick={logout}>
@@ -47,4 +52,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);
