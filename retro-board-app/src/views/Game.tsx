@@ -18,7 +18,6 @@ function GamePage({
 }: GameProps) {
   const translations = useTranslations();
   const languageContext = useContext(LanguageContext);
-  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
   const { state } = useGlobalState();
   const [game, setGame] = useState<Game>({
     players: [],
@@ -36,21 +35,24 @@ function GamePage({
   }
   useEffect(
     () => {
-      console.log('On mount');
+      if (state.username) {
+        console.log('On mount');
 
-      const socket = io();
-      const service = new GameEngine(
-        socket,
-        setGame,
-        () => game,
-        gameId,
-        state.username
-      );
-      setService(service);
-      setSocket(socket);
+        const socket = io();
+        const service = new GameEngine(
+          socket,
+          setGame,
+          () => game,
+          gameId,
+          state.username
+        );
+        setService(service);
+      }
 
       return () => {
-        service.disconnect();
+        if (service) {
+          service.disconnect();
+        }
       };
     },
     [gameId, state.username]
@@ -60,9 +62,6 @@ function GamePage({
     service.addPost('Hello ' + Math.random());
   });
 
-  // const onDelete = useCallback(() => {
-  //   service.deletePost()
-  // });
   return (
     <div>
       <div>Game {gameId}</div>
@@ -70,7 +69,7 @@ function GamePage({
       <Button onClick={onAction}>Action</Button>
       <div>
         {game.session.posts.map(post => (
-          <div>
+          <div key={post.id}>
             {post.content} {post.likes.length} {post.dislikes.length}
             <Button onClick={() => service.deletePost(post)}>Delete</Button>
             <Button onClick={() => service.like(post, true)}>Like</Button>
@@ -80,30 +79,11 @@ function GamePage({
       </div>
       <div>
         {game.players.map(player => (
-          <div>{player}</div>
+          <div key={player}>{player}</div>
         ))}
       </div>
     </div>
   );
 }
-
-// const send = (
-//   action: string,
-//   socket: SocketIOClient.Socket | null,
-//   sessionId: string,
-//   user: string | null,
-//   payload?: any
-// ) => {
-//   console.log('Send ', socket, user);
-//   if (socket && user) {
-//     socket.emit(action, {
-//       sessionId,
-//       payload: {
-//         user,
-//         ...payload,
-//       },
-//     });
-//   }
-// };
 
 export default withRouter(GamePage);
