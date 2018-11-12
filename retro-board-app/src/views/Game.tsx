@@ -1,15 +1,37 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { Button } from '@material-ui/core';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
+import styled from 'styled-components';
+// import {  } from '@material-ui/core';
+import {
+  SentimentSatisfied,
+  SentimentVeryDissatisfied,
+  WbSunny,
+} from '@material-ui/icons';
 import io from 'socket.io-client';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { PostType, Post } from 'retro-board-common';
 import useTranslations, { LanguageContext } from '../translations';
 import useGlobalState from '../state';
 import GameEngine, { Game } from './game/GameEngine';
+import Column from './game/Column';
 
 interface Route {
   gameId: string;
 }
 interface GameProps extends RouteComponentProps<Route> {}
+
+interface ColumnContent {
+  type: PostType;
+  posts: Post[];
+  icon: React.ComponentType;
+  label: string;
+  color: string;
+}
 
 function GamePage({
   match: {
@@ -58,25 +80,53 @@ function GamePage({
     [gameId, state.username]
   );
 
-  const onAction = useCallback(() => {
-    service.addPost('Hello ' + Math.random());
-  });
+  const columns: ColumnContent[] = useMemo(
+    () => [
+      {
+        type: PostType.Well,
+        posts: game.session.posts.filter(p => p.postType === PostType.Well),
+        icon: SentimentSatisfied,
+        label: translations.PostBoard.wellQuestion,
+        color: '#a2cf6e',
+      },
+      {
+        type: PostType.NotWell,
+        posts: game.session.posts.filter(p => p.postType === PostType.NotWell),
+        icon: SentimentVeryDissatisfied,
+        label: translations.PostBoard.notWellQuestion,
+        color: '#f6685e',
+      },
+      {
+        type: PostType.Ideas,
+        posts: game.session.posts.filter(p => p.postType === PostType.Ideas),
+        icon: WbSunny,
+        label: translations.PostBoard.ideasQuestion,
+        color: '#ffef62',
+      },
+    ],
+    [game.session.posts, languageContext.language]
+  );
 
   return (
     <div>
       <div>Game {gameId}</div>
-      <div />
-      <Button onClick={onAction}>Action</Button>
-      <div>
-        {game.session.posts.map(post => (
-          <div key={post.id}>
-            {post.content} {post.likes.length} {post.dislikes.length}
-            <Button onClick={() => service.deletePost(post)}>Delete</Button>
-            <Button onClick={() => service.like(post, true)}>Like</Button>
-            <Button onClick={() => service.like(post, false)}>Dislike</Button>
-          </div>
-        ))}
-      </div>
+      {service && (
+        <Columns>
+          {columns.map(column => (
+            <Column
+              posts={column.posts}
+              question={column.label}
+              icon={column.icon}
+              color={column.color}
+              onAdd={post => service.addPost(column.type, post)}
+              onDelete={post => service.deletePost(post)} // this should not have to be done that way
+              onLike={post => service.like(post, true)}
+              onDislike={post => service.like(post, false)}
+              onEdit={service.editPost}
+            />
+          ))}
+        </Columns>
+      )}
       <div>
         {game.players.map(player => (
           <div key={player}>{player}</div>
@@ -85,5 +135,9 @@ function GamePage({
     </div>
   );
 }
+
+const Columns = styled.div`
+  display: flex;
+`;
 
 export default withRouter(GamePage);

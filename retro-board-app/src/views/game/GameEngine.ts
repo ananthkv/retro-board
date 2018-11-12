@@ -1,4 +1,4 @@
-import { Actions, Session, Post } from 'retro-board-common';
+import { Actions, Session, Post, PostType } from 'retro-board-common';
 import { v4 } from 'uuid';
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
@@ -117,13 +117,13 @@ export default class GameEngine {
     }
   }
 
-  public addPost(content: string) {
+  public addPost(type: PostType, content: string) {
     const post: Post = {
       content,
       dislikes: [],
       likes: [],
       id: v4(),
-      postType: 'well',
+      postType: type,
       user: this.user!,
     };
     this.setState({
@@ -134,6 +134,10 @@ export default class GameEngine {
       },
     });
     this.send(Actions.ADD_POST_SUCCESS, post);
+  }
+
+  public editPost(post: Post) {
+    console.log('TODO');
   }
 
   public deletePost(post: Post) {
