@@ -154,7 +154,7 @@ db().then(store => {
       if (array.indexOf(data.user) === -1) {
         array.push(data.user);
         persist(session);
-        sendToAll(socket, session.id, RECEIVE_LIKE, data);
+        sendToAll(socket, session.id, RECEIVE_LIKE, post);
       }
     }
   };

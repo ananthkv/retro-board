@@ -1,18 +1,17 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { Actions, Session, Post } from 'retro-board-common';
 import { Button } from '@material-ui/core';
 import io from 'socket.io-client';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import useTranslations, { LanguageContext } from '../translations';
 import useGlobalState from '../state';
-import { v4 } from 'uuid';
+import GameEngine, { Game } from './game/GameEngine';
 
 interface Route {
   gameId: string;
 }
 interface GameProps extends RouteComponentProps<Route> {}
 
-function Game({
+function GamePage({
   match: {
     params: { gameId },
   },
@@ -21,80 +20,90 @@ function Game({
   const languageContext = useContext(LanguageContext);
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
   const { state } = useGlobalState();
-  const [game, setGame] = useState<Session>({
-    id: gameId,
-    name: '(unknown)',
-    posts: [],
+  const [game, setGame] = useState<Game>({
+    players: [],
+    session: {
+      id: gameId,
+      name: '(unknown)',
+      posts: [],
+    },
   });
+  const [service, setService] = useState<GameEngine>(
+    (null as unknown) as GameEngine
+  );
+  if (service) {
+    service.init(setGame, () => game);
+  }
   useEffect(
     () => {
       console.log('On mount');
+
       const socket = io();
+      const service = new GameEngine(
+        socket,
+        setGame,
+        () => game,
+        gameId,
+        state.username
+      );
+      setService(service);
       setSocket(socket);
 
-      socket.on('disconnect', () => {
-        console.warn('Server disconnected');
-        //store.dispatch({ type: LEAVE_SESSION });
-      });
-
-      socket.on('connect', () => {
-        console.log('Connected');
-        send(Actions.LOGIN_SUCCESS, socket, gameId, state.username);
-        send(Actions.JOIN_SESSION, socket, gameId, state.username);
-      });
-
-      socket.on(Actions.RECEIVE_CLIENT_LIST, (clients: any) => {
-        console.log('Client list: ', clients);
-      });
-
-      socket.on(Actions.RECEIVE_BOARD, (board: any) => {
-        console.log('Receive board: ', board);
-      });
-
       return () => {
-        console.log('Disconnect from App');
-        socket.disconnect();
+        service.disconnect();
       };
     },
     [gameId, state.username]
   );
 
   const onAction = useCallback(() => {
-    send(Actions.ADD_POST_SUCCESS, socket, gameId, state.username, {
-      content: 'Foo',
-      dislikes: [],
-      likes: [],
-      id: v4(),
-      postType: 'well',
-      user: state.username,
-    } as Post);
+    service.addPost('Hello ' + Math.random());
   });
+
+  // const onDelete = useCallback(() => {
+  //   service.deletePost()
+  // });
   return (
     <div>
       <div>Game {gameId}</div>
       <div />
       <Button onClick={onAction}>Action</Button>
+      <div>
+        {game.session.posts.map(post => (
+          <div>
+            {post.content} {post.likes.length} {post.dislikes.length}
+            <Button onClick={() => service.deletePost(post)}>Delete</Button>
+            <Button onClick={() => service.like(post, true)}>Like</Button>
+            <Button onClick={() => service.like(post, false)}>Dislike</Button>
+          </div>
+        ))}
+      </div>
+      <div>
+        {game.players.map(player => (
+          <div>{player}</div>
+        ))}
+      </div>
     </div>
   );
 }
 
-const send = (
-  action: string,
-  socket: SocketIOClient.Socket | null,
-  sessionId: string,
-  user: string | null,
-  payload?: any
-) => {
-  console.log('Send ', socket, user);
-  if (socket && user) {
-    socket.emit(action, {
-      sessionId,
-      payload: {
-        user,
-        ...payload,
-      },
-    });
-  }
-};
+// const send = (
+//   action: string,
+//   socket: SocketIOClient.Socket | null,
+//   sessionId: string,
+//   user: string | null,
+//   payload?: any
+// ) => {
+//   console.log('Send ', socket, user);
+//   if (socket && user) {
+//     socket.emit(action, {
+//       sessionId,
+//       payload: {
+//         user,
+//         ...payload,
+//       },
+//     });
+//   }
+// };
 
-export default withRouter(Game);
+export default withRouter(GamePage);
