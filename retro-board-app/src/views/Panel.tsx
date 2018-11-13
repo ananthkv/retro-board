@@ -1,4 +1,5 @@
 import React, { useContext, useCallback } from 'react';
+import { Route } from 'react-router-dom';
 import { Drawer } from '@material-ui/core';
 import useTranslations, { LanguageContext } from '../translations';
 import useGlobalState from '../state';
@@ -16,7 +17,7 @@ function Panel() {
         value={languageContext.language}
         onChange={languageContext.setLanguage}
       />
-      <PlayerList />
+      <Route path="/game/:gameId" component={PlayerList} />
     </Drawer>
   );
 }
