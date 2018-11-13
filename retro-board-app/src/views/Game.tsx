@@ -16,7 +16,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { PostType, Post } from 'retro-board-common';
 import useTranslations, { LanguageContext } from '../translations';
 import useGlobalState from '../state';
-import GameEngine, { Game } from './game/GameEngine';
+import GameEngine from './game/GameEngine';
 import Column from './game/Column';
 
 interface Route {
@@ -39,20 +39,12 @@ function GamePage({
 }: GameProps) {
   const translations = useTranslations();
   const languageContext = useContext(LanguageContext);
-  const { state } = useGlobalState();
-  const [game, setGame] = useState<Game>({
-    players: [],
-    session: {
-      id: gameId,
-      name: '(unknown)',
-      posts: [],
-    },
-  });
+  const { state, setSession, setPlayers } = useGlobalState();
   const [service, setService] = useState<GameEngine>(
     (null as unknown) as GameEngine
   );
   if (service) {
-    service.init(setGame, () => game);
+    service.init(setSession, setPlayers, () => state);
   }
   useEffect(
     () => {
@@ -62,8 +54,9 @@ function GamePage({
         const socket = io();
         const service = new GameEngine(
           socket,
-          setGame,
-          () => game,
+          setSession,
+          setPlayers,
+          () => state,
           gameId,
           state.username
         );
@@ -83,27 +76,27 @@ function GamePage({
     () => [
       {
         type: PostType.Well,
-        posts: game.session.posts.filter(p => p.postType === PostType.Well),
+        posts: state.session.posts.filter(p => p.postType === PostType.Well),
         icon: SentimentSatisfied,
         label: translations.PostBoard.wellQuestion,
         color: '#a2cf6e',
       },
       {
         type: PostType.NotWell,
-        posts: game.session.posts.filter(p => p.postType === PostType.NotWell),
+        posts: state.session.posts.filter(p => p.postType === PostType.NotWell),
         icon: SentimentVeryDissatisfied,
         label: translations.PostBoard.notWellQuestion,
         color: '#f6685e',
       },
       {
         type: PostType.Ideas,
-        posts: game.session.posts.filter(p => p.postType === PostType.Ideas),
+        posts: state.session.posts.filter(p => p.postType === PostType.Ideas),
         icon: WbSunny,
         label: translations.PostBoard.ideasQuestion,
         color: '#ffef62',
       },
     ],
-    [game.session.posts, languageContext.language]
+    [state.session.posts, languageContext.language]
   );
 
   return (
@@ -128,7 +121,7 @@ function GamePage({
         </Columns>
       )}
       <div>
-        {game.players.map(player => (
+        {state.players.map(player => (
           <div key={player}>{player}</div>
         ))}
       </div>

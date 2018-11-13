@@ -1,13 +1,8 @@
 import { Actions, Session, Post, PostType } from 'retro-board-common';
 import { v4 } from 'uuid';
-import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import uniq from 'lodash/uniq';
-
-export interface Game {
-  players: string[];
-  session: Session;
-}
+import { State } from '../../state/types';
 
 interface Socket extends Partial<SocketIOClient.Socket> {
   on(event: string, fn: Function): SocketIOClient.Emitter;
@@ -18,8 +13,9 @@ interface Socket extends Partial<SocketIOClient.Socket> {
 export default class GameEngine {
   constructor(
     private socket: Socket,
-    private setState: (game: Game) => void,
-    private getState: () => Game,
+    private setSession: (session: Session) => void,
+    private setPlayers: (players: string[]) => void,
+    private getState: () => State,
     private sessionId: string,
     private user: string | null
   ) {
@@ -36,42 +32,30 @@ export default class GameEngine {
 
     socket.on(Actions.RECEIVE_CLIENT_LIST, (clients: string[]) => {
       console.log('Client list: ', clients);
-      this.setState({
-        ...this.state,
-        players: clients,
-      });
+      this.setPlayers(clients);
     });
 
     socket.on(Actions.RECEIVE_BOARD, (board: Post[]) => {
       console.log('Receive board: ', board);
-      this.setState({
-        ...this.state,
-        session: {
-          ...this.state.session,
-          posts: board,
-        },
+      this.setSession({
+        ...this.state.session,
+        posts: board,
       });
     });
 
     socket.on(Actions.RECEIVE_POST, (post: Post) => {
       console.log('Receive post: ', post);
-      this.setState({
-        ...this.state,
-        session: {
-          ...this.state.session,
-          posts: [...this.state.session.posts, post],
-        },
+      this.setSession({
+        ...this.state.session,
+        posts: [...this.state.session.posts, post],
       });
     });
 
     socket.on(Actions.RECEIVE_DELETE_POST, (post: Post) => {
       console.log('Delete post: ', post);
-      this.setState({
-        ...this.state,
-        session: {
-          ...this.state.session,
-          posts: this.state.session.posts.filter(p => p.id !== post.id),
-        },
+      this.setSession({
+        ...this.state.session,
+        posts: this.state.session.posts.filter(p => p.id !== post.id),
       });
     });
 
@@ -90,12 +74,17 @@ export default class GameEngine {
     });
   }
 
-  public get state(): Game {
+  public get state(): State {
     return this.getState();
   }
 
-  public init(setState: (game: Game) => void, getState: () => Game) {
-    this.setState = setState;
+  public init(
+    setSession: (session: Session) => void,
+    setPlayers: (players: string[]) => void,
+    getState: () => State
+  ) {
+    this.setSession = setSession;
+    this.setPlayers = setPlayers;
     this.getState = getState;
   }
 
@@ -126,12 +115,9 @@ export default class GameEngine {
       postType: type,
       user: this.user!,
     };
-    this.setState({
-      ...this.state,
-      session: {
-        ...this.state.session,
-        posts: [...this.state.session.posts, post],
-      },
+    this.setSession({
+      ...this.state.session,
+      posts: [...this.state.session.posts, post],
     });
     this.send(Actions.ADD_POST_SUCCESS, post);
   }
@@ -141,12 +127,9 @@ export default class GameEngine {
   }
 
   public deletePost(post: Post) {
-    this.setState({
-      ...this.state,
-      session: {
-        ...this.state.session,
-        posts: this.state.session.posts.filter(p => p.id !== post.id),
-      },
+    this.setSession({
+      ...this.state.session,
+      posts: this.state.session.posts.filter(p => p.id !== post.id),
     });
     this.send(Actions.DELETE_POST, post);
   }
@@ -172,16 +155,13 @@ export default class GameEngine {
 
   private updatePost(post: Post) {
     const index = findIndex(this.state.session.posts, p => p.id === post.id);
-    this.setState({
-      ...this.state,
-      session: {
-        ...this.state.session,
-        posts: [
-          ...this.state.session.posts.slice(0, index),
-          post,
-          ...this.state.session.posts.slice(index + 1),
-        ],
-      },
+    this.setSession({
+      ...this.state.session,
+      posts: [
+        ...this.state.session.posts.slice(0, index),
+        post,
+        ...this.state.session.posts.slice(index + 1),
+      ],
     });
   }
 }

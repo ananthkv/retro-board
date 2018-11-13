@@ -3,6 +3,7 @@ import { Drawer } from '@material-ui/core';
 import useTranslations, { LanguageContext } from '../translations';
 import useGlobalState from '../state';
 import LanguagePicker from '../components/LanguagePicker';
+import PlayerList from './panel/PlayerList';
 
 function Panel() {
   const translations = useTranslations();
@@ -15,6 +16,7 @@ function Panel() {
         value={languageContext.language}
         onChange={languageContext.setLanguage}
       />
+      <PlayerList />
     </Drawer>
   );
 }
