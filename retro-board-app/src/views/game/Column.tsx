@@ -83,6 +83,9 @@ const ColumnWrapper = styled.div`
 const Add = styled.div`
   width: 100%;
   margin-bottom: 20px;
+  > div {
+    width: 100%;
+  }
   input {
     width: 100%;
   }

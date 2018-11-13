@@ -8,6 +8,7 @@ function Panel() {
   const translations = useTranslations();
   const languageContext = useContext(LanguageContext);
   const { state, togglePanel } = useGlobalState();
+
   return (
     <Drawer open={state.panelOpen} onClose={togglePanel}>
       <LanguagePicker

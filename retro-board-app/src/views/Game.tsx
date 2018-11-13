@@ -6,7 +6,6 @@ import React, {
   useMemo,
 } from 'react';
 import styled from 'styled-components';
-// import {  } from '@material-ui/core';
 import {
   SentimentSatisfied,
   SentimentVeryDissatisfied,
@@ -114,15 +113,16 @@ function GamePage({
         <Columns>
           {columns.map(column => (
             <Column
+              key={column.type}
               posts={column.posts}
               question={column.label}
               icon={column.icon}
               color={column.color}
               onAdd={post => service.addPost(column.type, post)}
-              onDelete={post => service.deletePost(post)} // this should not have to be done that way
+              onDelete={service.deletePost.bind(service)}
               onLike={post => service.like(post, true)}
               onDislike={post => service.like(post, false)}
-              onEdit={service.editPost}
+              onEdit={service.editPost.bind(service)}
             />
           ))}
         </Columns>
