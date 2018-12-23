@@ -130,11 +130,6 @@ function GamePage({
           </Columns>
         </>
       )}
-      <div>
-        {state.players.map(player => (
-          <div key={player}>{player}</div>
-        ))}
-      </div>
     </div>
   );
 }

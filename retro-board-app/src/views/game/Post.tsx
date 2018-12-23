@@ -1,4 +1,5 @@
 import React, { SFC, useContext } from 'react';
+import { includes } from 'lodash';
 import styled from 'styled-components';
 import { Button, Typography } from '@material-ui/core';
 import {
@@ -7,6 +8,7 @@ import {
   DeleteForeverOutlined,
 } from '@material-ui/icons';
 import useTranslations from '../../translations';
+import useGlobalState from '../../state';
 import EditableLabel from '../../components/EditableLabel';
 import { Post } from 'retro-board-common';
 
@@ -28,24 +30,28 @@ const PostItem: SFC<PostItemProps> = ({
   onDelete,
 }) => {
   const translations = useTranslations();
-
+  const { state } = useGlobalState();
+  const user = state.username;
+  const hasVoted = includes(post.likes, user) || includes(post.dislikes, user);
   return (
     <PostWrapper color={color}>
       <Typography variant="body1">
         <EditableLabel value={post.content} onChange={onEdit} />
       </Typography>
       <Controls>
-        <Button onClick={onLike}>
-          <ThumbUpOutlined />
+        <Button onClick={onLike} disabled={hasVoted}>
+          <ThumbUpOutlined style={{ color: 'green' }} />
           &nbsp;{post.likes.length}
         </Button>
-        <Button onClick={onDislike}>
-          <ThumbDownOutlined />
+        <Button onClick={onDislike} disabled={hasVoted}>
+          <ThumbDownOutlined style={{ color: 'darkred' }} />
           &nbsp;{post.dislikes.length}
         </Button>
-        <Button onClick={onDelete}>
-          <DeleteForeverOutlined />
-        </Button>
+        {user === post.user && (
+          <Button onClick={onDelete}>
+            <DeleteForeverOutlined style={{ color: 'red' }} />
+          </Button>
+        )}
       </Controls>
     </PostWrapper>
   );
