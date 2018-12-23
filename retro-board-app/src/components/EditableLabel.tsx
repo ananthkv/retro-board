@@ -53,7 +53,7 @@ export default class EditableLabel extends Component<
       >
         {value || placeholder}
         &nbsp;
-        <EditIcon />
+        <EditIcon fontSize="inherit" />
       </ViewMode>
     );
   }
@@ -98,9 +98,10 @@ const EditMode = styled.span`
     background: none;
     border: none;
     outline: none;
+    font-size: inherit;
   }
 `;
 
 const EditIcon = styled(Edit)`
-  font-size: 0.8em;
+  font-size: 0.1em;
 `;

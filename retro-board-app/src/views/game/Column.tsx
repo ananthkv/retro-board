@@ -78,6 +78,7 @@ const Column: SFC<ColumnProps> = ({
 
 const ColumnWrapper = styled.div`
   flex: 1;
+  margin-bottom: 10px;
 `;
 
 const Add = styled.div`

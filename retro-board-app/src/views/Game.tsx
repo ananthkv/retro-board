@@ -136,6 +136,10 @@ function GamePage({
 
 const Columns = styled.div`
   display: flex;
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 export default withRouter(GamePage);
