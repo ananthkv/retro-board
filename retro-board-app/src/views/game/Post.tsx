@@ -7,6 +7,7 @@ import {
   DeleteForeverOutlined,
 } from '@material-ui/icons';
 import useTranslations from '../../translations';
+import EditableLabel from '../../components/EditableLabel';
 import { Post } from 'retro-board-common';
 
 interface PostItemProps {
@@ -30,7 +31,9 @@ const PostItem: SFC<PostItemProps> = ({
 
   return (
     <PostWrapper color={color}>
-      <Typography variant="body1">{post.content}</Typography>
+      <Typography variant="body1">
+        <EditableLabel value={post.content} onChange={onEdit} />
+      </Typography>
       <Controls>
         <Button onClick={onLike}>
           <ThumbUpOutlined />

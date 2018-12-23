@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import {
   SentimentSatisfied,
@@ -109,13 +103,15 @@ function GamePage({
 
   return (
     <div>
-      <Typography variant="h5">Game {gameId}</Typography>
       {service && (
         <>
-          <EditableLabel
-            value={state.session.name}
-            onChange={value => service.renameSession(value)}
-          />
+          <Typography variant="body1" align="center" gutterBottom>
+            <EditableLabel
+              placeholder={translations.SessionName.defaultSessionName}
+              value={state.session.name}
+              onChange={value => service.renameSession(value)}
+            />
+          </Typography>
           <Columns>
             {columns.map(column => (
               <Column

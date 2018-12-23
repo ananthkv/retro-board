@@ -72,9 +72,9 @@ export default class GameEngine {
       });
     });
 
-    socket.on(Actions.RECEIVE_EDIT_POST, (post: any) => {
-      console.log('Receive edit post: ', post);
-      this.updatePost(post);
+    socket.on(Actions.RECEIVE_EDIT_POST, (post: { post: Post }) => {
+      console.log('Receive edit post: ', post.post);
+      this.updatePost(post.post);
     });
   }
 
@@ -131,7 +131,8 @@ export default class GameEngine {
   }
 
   public editPost(post: Post) {
-    console.log('TODO');
+    this.updatePost(post);
+    this.send(Actions.EDIT_POST, { post });
   }
 
   public deletePost(post: Post) {

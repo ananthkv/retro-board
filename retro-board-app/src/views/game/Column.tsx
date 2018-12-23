@@ -81,8 +81,9 @@ const ColumnWrapper = styled.div`
 `;
 
 const Add = styled.div`
-  width: 100%;
+  width: calc(100% - 10px);
   margin-bottom: 20px;
+
   > div {
     width: 100%;
   }

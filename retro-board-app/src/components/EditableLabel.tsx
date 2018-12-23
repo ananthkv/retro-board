@@ -1,13 +1,6 @@
-/* eslint react/no-string-refs:0 */
-/* eslint jsx-a11y/no-static-element-interactions:0 */
-
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import noop from 'lodash/noop';
 import { Edit } from '@material-ui/icons';
-// import FontIcon from 'react-toolbox/lib/font_icon';
-// import style from './EditableLabel.scss';
-// import icons from '../constants/icons';
 
 interface EditableLabelProps {
   value: string;
@@ -111,37 +104,3 @@ const EditMode = styled.span`
 const EditIcon = styled(Edit)`
   font-size: 0.8em;
 `;
-
-// .editableLabel {
-//   .view {
-//       .editIcon {
-//           color: $color-primary;
-//           font-size: 0.8em;
-//       }
-//   }
-
-//   .edit {
-//       margin: auto;
-
-//       textarea {
-//           width: 100%;
-//           background: none;
-//           border: none;
-//           outline: none;
-//       }
-//   }
-// }
-
-// EditableLabel.propTypes = {
-//   value: PropTypes.string,
-//   readOnly: PropTypes.bool,
-//   placeholder: PropTypes.string,
-//   onChange: PropTypes.func,
-// };
-
-// EditableLabel.defaultProps = {
-//   value: '',
-//   readOnly: false,
-//   placeholder: 'nothing',
-//   onChange: noop,
-// };
