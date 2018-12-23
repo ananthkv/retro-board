@@ -66,6 +66,10 @@ export default class GameEngine {
 
     socket.on(Actions.RECEIVE_SESSION_NAME, (name: string) => {
       console.log('Receive session name: ', name);
+      this.setSession({
+        ...this.state.session,
+        name,
+      });
     });
 
     socket.on(Actions.RECEIVE_EDIT_POST, (post: any) => {
@@ -99,7 +103,6 @@ export default class GameEngine {
   }
 
   private send(action: string, payload?: any) {
-    // console.log('Send ', this.socket, user);
     if (this.socket && this.user) {
       this.socket.emit(action, {
         sessionId: this.sessionId,
@@ -156,6 +159,14 @@ export default class GameEngine {
       like,
       post,
     });
+  }
+
+  public renameSession(name: string) {
+    this.setSession({
+      ...this.state.session,
+      name,
+    });
+    this.send(Actions.RENAME_SESSION, { name });
   }
 
   private updatePost(post: Post) {

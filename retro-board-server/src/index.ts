@@ -125,9 +125,9 @@ db().then(store => {
     data: any,
     socket: ExtendedSocket
   ) => {
-    session.name = data;
+    session.name = data.name;
     persist(session);
-    sendToAll(socket, session.id, RECEIVE_SESSION_NAME, data);
+    sendToAll(socket, session.id, RECEIVE_SESSION_NAME, data.name);
   };
 
   const leave = (session: Session, data: any, socket: ExtendedSocket) => {

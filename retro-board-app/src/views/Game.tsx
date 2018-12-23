@@ -19,6 +19,7 @@ import useTranslations, { LanguageContext } from '../translations';
 import useGlobalState from '../state';
 import GameEngine from './game/GameEngine';
 import Column from './game/Column';
+import EditableLabel from '../components/EditableLabel';
 
 interface Route {
   gameId: string;
@@ -110,22 +111,28 @@ function GamePage({
     <div>
       <Typography variant="h5">Game {gameId}</Typography>
       {service && (
-        <Columns>
-          {columns.map(column => (
-            <Column
-              key={column.type}
-              posts={column.posts}
-              question={column.label}
-              icon={column.icon}
-              color={column.color}
-              onAdd={post => service.addPost(column.type, post)}
-              onDelete={service.deletePost.bind(service)}
-              onLike={post => service.like(post, true)}
-              onDislike={post => service.like(post, false)}
-              onEdit={service.editPost.bind(service)}
-            />
-          ))}
-        </Columns>
+        <>
+          <EditableLabel
+            value={state.session.name}
+            onChange={value => service.renameSession(value)}
+          />
+          <Columns>
+            {columns.map(column => (
+              <Column
+                key={column.type}
+                posts={column.posts}
+                question={column.label}
+                icon={column.icon}
+                color={column.color}
+                onAdd={post => service.addPost(column.type, post)}
+                onDelete={service.deletePost.bind(service)}
+                onLike={post => service.like(post, true)}
+                onDislike={post => service.like(post, false)}
+                onEdit={service.editPost.bind(service)}
+              />
+            ))}
+          </Columns>
+        </>
       )}
       <div>
         {state.players.map(player => (
