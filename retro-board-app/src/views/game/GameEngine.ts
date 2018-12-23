@@ -91,6 +91,11 @@ export default class GameEngine {
   public disconnect() {
     console.log('Disconnect from App');
     this.socket.disconnect();
+    this.setSession({
+      posts: [],
+      name: '',
+      id: '',
+    });
   }
 
   private send(action: string, payload?: any) {

@@ -1,21 +1,50 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
+import styled from 'styled-components';
+import shortid from 'shortid';
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardMedia,
+  Typography,
+  CardContent,
+  CardActions,
+} from '@material-ui/core';
 import useTranslations, { LanguageContext } from '../translations';
-import LanguagePicker from '../components/LanguagePicker';
+import logo from './home/logo.png';
 
-function Home() {
+interface HomeProps extends RouteComponentProps {}
+
+function Home(props: HomeProps) {
   const translations = useTranslations();
-  const languageContext = useContext(LanguageContext);
+  const createSession = useCallback(() => {
+    props.history.push('/game/' + shortid());
+  });
   return (
-    <div>
-      <div>Home {translations.Clients.header}</div>
-      <div>
-        <LanguagePicker
-          value={languageContext.language}
-          onChange={languageContext.setLanguage}
-        />
-      </div>
-    </div>
+    <MainCard>
+      <CardActionArea>
+        <CardMedia image={logo} title="Retrospected" style={{ height: 100 }} />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {translations.Join.welcome}
+          </Typography>
+          <Typography component="p">
+            {translations.Join.standardTab.text}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button onClick={createSession}>
+          {translations.Join.standardTab.button}
+        </Button>
+      </CardActions>
+    </MainCard>
   );
 }
 
-export default Home;
+const MainCard = styled(Card)`
+  max-width: 600px;
+  margin: auto;
+`;
+export default withRouter(Home);

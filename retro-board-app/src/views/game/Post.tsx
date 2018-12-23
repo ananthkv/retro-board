@@ -1,6 +1,6 @@
 import React, { SFC, useContext } from 'react';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import {
   ThumbUpOutlined,
   ThumbDownOutlined,
@@ -30,7 +30,7 @@ const PostItem: SFC<PostItemProps> = ({
 
   return (
     <PostWrapper color={color}>
-      <Content>{post.content}</Content>
+      <Typography variant="body1">{post.content}</Typography>
       <Controls>
         <Button onClick={onLike}>
           <ThumbUpOutlined />
@@ -49,10 +49,11 @@ const PostItem: SFC<PostItemProps> = ({
 };
 
 const PostWrapper = styled<{ color: string }, 'div'>('div')`
-  border: 1px solid grey;
-  border-radius: 5px;
   background-color: ${props => props.color};
   margin: 5px;
+  padding: 5px;
+  border-radius: 1px;
+  box-shadow: 2px 2px 5px 0px rgba(173, 173, 173, 1);
 `;
 
 const Content = styled.div``;

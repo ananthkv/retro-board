@@ -35,7 +35,7 @@ function App({ history }: AppProps) {
           <IconButton color="inherit" aria-label="Menu" onClick={togglePanel}>
             <MenuIcon />
           </IconButton>
-          <Title variant="title" onClick={goToHome}>
+          <Title variant="title" onClick={goToHome} style={{ color: 'white' }}>
             Retrospected
           </Title>
           <Button color="inherit" onClick={logout}>
@@ -43,13 +43,21 @@ function App({ history }: AppProps) {
           </Button>
         </Toolbar>
       </AppBar>
-
-      <Route path="/" exact component={Home} />
-      <Route path="/game/:gameId" component={Game} />
+      <Page>
+        <Route path="/" exact component={Home} />
+        <Route path="/game/:gameId" component={Game} />
+        {!state.username && <Login />}
+      </Page>
       <Panel />
-      {!state.username && <Login />}
     </div>
   );
 }
+
+const Page = styled.main`
+  margin: 50px;
+  @media screen and (max-width: 600px) {
+    margin: 10px;
+  }
+`;
 
 export default withRouter(App);

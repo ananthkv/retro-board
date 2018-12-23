@@ -11,6 +11,7 @@ import {
   SentimentVeryDissatisfied,
   WbSunny,
 } from '@material-ui/icons';
+import { Typography } from '@material-ui/core';
 import io from 'socket.io-client';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { PostType, Post } from 'retro-board-common';
@@ -51,6 +52,12 @@ function GamePage({
       if (state.username) {
         console.log('On mount');
 
+        setSession({
+          id: gameId,
+          name: '',
+          posts: [],
+        });
+
         const socket = io();
         const service = new GameEngine(
           socket,
@@ -79,29 +86,29 @@ function GamePage({
         posts: state.session.posts.filter(p => p.postType === PostType.Well),
         icon: SentimentSatisfied,
         label: translations.PostBoard.wellQuestion,
-        color: '#a2cf6e',
+        color: '#C8E6C9',
       },
       {
         type: PostType.NotWell,
         posts: state.session.posts.filter(p => p.postType === PostType.NotWell),
         icon: SentimentVeryDissatisfied,
         label: translations.PostBoard.notWellQuestion,
-        color: '#f6685e',
+        color: '#ffcdd2',
       },
       {
         type: PostType.Ideas,
         posts: state.session.posts.filter(p => p.postType === PostType.Ideas),
         icon: WbSunny,
         label: translations.PostBoard.ideasQuestion,
-        color: '#ffef62',
+        color: '#FFF9C4',
       },
     ],
-    [state.session.posts, languageContext.language]
+    [state.session.posts, languageContext.language, gameId]
   );
 
   return (
     <div>
-      <div>Game {gameId}</div>
+      <Typography variant="h5">Game {gameId}</Typography>
       {service && (
         <Columns>
           {columns.map(column => (
