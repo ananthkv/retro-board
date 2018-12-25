@@ -20,7 +20,9 @@ const LanguagePicker: SFC<LanguagePickerProps> = ({ value, onChange }) => {
       {languages.map(language => (
         <MenuItem value={language.value} key={language.value}>
           <LanguageItem>
-            <Flag className={`flag-icon flag-icon-${language.iso}`} />
+            <Flag className={`flag-icon flag-icon-${language.iso}`}>
+              <FlagOverlay />
+            </Flag>
             <Names>
               <Name>{language.name}</Name>
               <EnglishName>{language.englishName}</EnglishName>
@@ -33,7 +35,7 @@ const LanguagePicker: SFC<LanguagePickerProps> = ({ value, onChange }) => {
 };
 
 const StyledSelect = styled(Select)`
-  width: 200px;
+  width: 250px;
 `;
 
 const LanguageItem = styled.div`
@@ -42,7 +44,25 @@ const LanguageItem = styled.div`
 `;
 
 const Flag = styled.div`
-  font-size: 34px;
+  font-size: 32px;
+  margin-left: 10px;
+  height: 32px;
+  margin-right: 8px;
+  position: relative;
+`;
+
+const FlagOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 32px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
 `;
 const Names = styled.div`
   margin-left: 5px;

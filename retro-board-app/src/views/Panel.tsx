@@ -1,4 +1,5 @@
 import React, { useContext, useCallback } from 'react';
+import styled from 'styled-components';
 import { Route } from 'react-router-dom';
 import { Drawer } from '@material-ui/core';
 import useTranslations, { LanguageContext } from '../translations';
@@ -17,9 +18,19 @@ function Panel() {
         value={languageContext.language}
         onChange={languageContext.setLanguage}
       />
-      <Route path="/game/:gameId" component={PlayerList} />
+      <Content>
+        <Route path="/game/:gameId" component={PlayerList} />
+      </Content>
     </Drawer>
   );
 }
+
+const Content = styled.div`
+  padding: 10px;
+
+  @media screen and (max-width: 600px) {
+    padding: 3px;
+  }
+`;
 
 export default Panel;

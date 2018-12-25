@@ -7,6 +7,13 @@ const theme = createMuiTheme({
     primary: blueGrey,
     secondary: pink,
   },
+  overrides: {
+    MuiDrawer: {
+      paper: {
+        width: '250px',
+      },
+    },
+  },
 });
 
 export default theme;
