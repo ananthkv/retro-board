@@ -28,7 +28,6 @@ const Column: SFC<ColumnProps> = ({
   onEdit,
   onDelete,
 }) => {
-  const translations = useTranslations();
   const [content, setContent] = useState('');
   const onContentChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setContent(e.target.value)

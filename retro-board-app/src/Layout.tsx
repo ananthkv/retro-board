@@ -9,11 +9,13 @@ import {
   Typography,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { Route } from 'react-router-dom';
 import Home from './views/Home';
 import Game from './views/Game';
 import Panel from './views/Panel';
 import Login from './views/Login';
+import Invite from './views/layout/Invite';
 import useGlobalState from './state';
 import useLoginFromLocalStorage from './effects/useLoginFromLocalStorage';
 
@@ -38,6 +40,7 @@ function App({ history }: AppProps) {
           <Title variant="title" onClick={goToHome} style={{ color: 'white' }}>
             Retrospected
           </Title>
+          <Route exact path="/game/:gameId" render={() => <Invite />} />
           <Button color="inherit" onClick={logout}>
             {state.username}
           </Button>
