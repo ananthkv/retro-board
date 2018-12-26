@@ -6,6 +6,7 @@ import useTranslations, { LanguageContext } from '../translations';
 import useGlobalState from '../state';
 import LanguagePicker from '../components/LanguagePicker';
 import PlayerList from './panel/PlayerList';
+import SummaryMode from './panel/SummaryMode';
 
 function Panel() {
   const translations = useTranslations();
@@ -18,6 +19,9 @@ function Panel() {
         value={languageContext.language}
         onChange={languageContext.setLanguage}
       />
+      <Content>
+        <Route path="/game/:gameId" component={SummaryMode} />
+      </Content>
       <Content>
         <Route path="/game/:gameId" component={PlayerList} />
       </Content>

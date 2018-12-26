@@ -6,6 +6,8 @@ export const LOGIN = 'retrospected/user/login';
 export const LOGOUT = 'retrospected/user/logout';
 export const SET_PLAYERS = 'retrospected/game/players/set';
 export const SET_SESSION = 'retrospected/game/session/set';
+export const TOGGLE_SUMMARY_MODE =
+  'retrospected/game/session/summary-mode/toggle';
 
 const createAction = (type: string, payload?: any) => ({
   type,
@@ -30,4 +32,8 @@ export const setPlayers = (dispatch: Dispatch) => (players: string[]) => {
 
 export const setSession = (dispatch: Dispatch) => (session: Session) => {
   dispatch(createAction(SET_SESSION, session));
+};
+
+export const toggleSummaryMode = (dispatch: Dispatch) => () => {
+  dispatch(createAction(TOGGLE_SUMMARY_MODE));
 };

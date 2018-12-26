@@ -1,13 +1,20 @@
 import React, { useContext, useReducer, createContext, SFC } from 'react';
 import { State, Action } from './types';
 import reducer from './reducer';
-import { togglePanel, login, logout, setPlayers, setSession } from './actions';
-import { Session } from 'retro-board-common';
+import {
+  togglePanel,
+  login,
+  logout,
+  setPlayers,
+  setSession,
+  toggleSummaryMode,
+} from './actions';
 
 const initialState: State = {
   panelOpen: false,
   username: null,
   players: [],
+  summaryMode: false,
   session: {
     id: '',
     name: '',
@@ -35,5 +42,6 @@ export function useGlobalState() {
     logout: logout(dispatch),
     setPlayers: setPlayers(dispatch),
     setSession: setSession(dispatch),
+    toggleSummaryMode: toggleSummaryMode(dispatch),
   };
 }

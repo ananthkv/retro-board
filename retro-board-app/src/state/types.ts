@@ -10,6 +10,7 @@ export interface State {
   username: string | null;
   players: string[];
   session: Session;
+  summaryMode: boolean;
 }
 
 export type Dispatch = (action: Action) => void;

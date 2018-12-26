@@ -37,13 +37,11 @@ function App({ history }: AppProps) {
           <IconButton color="inherit" aria-label="Menu" onClick={togglePanel}>
             <MenuIcon />
           </IconButton>
-          <Title variant="title" onClick={goToHome} style={{ color: 'white' }}>
+          <Title variant="title" color="inherit" onClick={goToHome}>
             Retrospected
           </Title>
           <Route exact path="/game/:gameId" render={() => <Invite />} />
-          <Button color="inherit" onClick={logout}>
-            {state.username}
-          </Button>
+          <Button color="inherit">{state.username}</Button>
         </Toolbar>
       </AppBar>
       <Page>

@@ -23,17 +23,15 @@ function Home(props: HomeProps) {
   });
   return (
     <MainCard>
-      <CardActionArea>
-        <CardMedia image={logo} title="Retrospected" style={{ height: 100 }} />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {translations.Join.welcome}
-          </Typography>
-          <Typography component="p">
-            {translations.Join.standardTab.text}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <CardMedia image={logo} title="Retrospected" style={{ height: 200 }} />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="h2">
+          {translations.Join.welcome}
+        </Typography>
+        <Typography component="p">
+          {translations.Join.standardTab.text}
+        </Typography>
+      </CardContent>
       <CardActions>
         <Button onClick={createSession}>
           {translations.Join.standardTab.button}
@@ -44,7 +42,7 @@ function Home(props: HomeProps) {
 }
 
 const MainCard = styled(Card)`
-  max-width: 600px;
+  max-width: 800px;
   margin: auto;
 `;
 export default withRouter(Home);
